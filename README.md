@@ -16,9 +16,9 @@ This is a Spring Boot application that provides RESTful endpoints to manage a bo
     - Endpoints to retrieve books by author, books available for rent, and books currently rented.
 
 3. **Business Logic**:
-    - When renting a book, ensure the book is not already rented.
-    - When returning a book, mark it as available.
-    - Implement a method to check for overdue rentals (rental periods exceeding a set time, e.g., 14 days).
+    - When renting a book, ensure the book is not already rented logic is there.
+    - When returning a book, marking it as available is also there
+    - Implement a method to check for overdue rentals (rental periods exceeding a set time, e.g., 14 days) is also implemneted.
 
 ## Technologies Used
 
