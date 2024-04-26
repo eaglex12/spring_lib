@@ -47,24 +47,28 @@ public class BooksService {
         Optional<Rental> rentalOptional = rentalRepository.findById(rentalId);
         if (rentalOptional.isPresent()) {
             Rental rental = rentalOptional.get();
-            rental.setReturnDate(returnDate);  
+            rental.setReturnDate(returnDate);
             rentalRepository.save(rental);
+            updateBookAvailability(rental.getBookId(), "available");
             return true;
         }
         return false;
+    }
+    public void updateBookAvailability(int bookId, String availability) {
+        Optional<Books> bookOptional = booksRepository.findById(bookId);
+        if (bookOptional.isPresent()) {
+            Books book = bookOptional.get();
+            book.setAvailability(availability);
+            booksRepository.save(book);
+        }
+    }
+    public boolean isBookAvailable(int bookId) {
+        Books book = booksRepository.findById(bookId).orElse(null);
+        return book != null && "available".equals(book.getAvailability());
     }
     
+    
 
-    public boolean returnBook(int bookId) {
-        Optional<Rental> rental = rentalRepository.findByBookId(bookId);
-        if (rental.isPresent()) {
-            Rental rentalRecord = rental.get();
-            rentalRecord.setReturnDate(LocalDate.now());
-            rentalRepository.save(rentalRecord);
-            return true;
-        }
-        return false;
-    }
 
     public List<Rental> getOverdueRentals() {
         LocalDate currentDate = LocalDate.now();

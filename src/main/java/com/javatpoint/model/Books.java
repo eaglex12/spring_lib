@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "book")
 public class Books {
@@ -26,6 +27,10 @@ public class Books {
 
     @Column(nullable = false)
     private int publicationYear;
+
+
+    @Column
+    private String availability = "available"; 
 
     // Getters and Setters
 
@@ -67,5 +72,13 @@ public class Books {
 
     public void setPublicationYear(int publicationYear) {
         this.publicationYear = publicationYear;
+    }
+
+    public String getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(String availability) {
+        this.availability = availability;
     }
 }

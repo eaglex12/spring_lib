@@ -1,6 +1,8 @@
 package com.javatpoint.controller;
 
 import com.javatpoint.model.Rental;
+import com.javatpoint.repository.BooksRepository;
+import com.javatpoint.service.BooksService;
 import com.javatpoint.service.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,9 @@ public class RentalController {
     @Autowired
     RentalService rentalService;
 
+    @Autowired
+    BooksService booksService;
+
     @GetMapping
     private List<Rental> getAllRentals() {
         return rentalService.getAllRentals();
@@ -36,13 +41,18 @@ public class RentalController {
 
     @PostMapping
     private ResponseEntity<String> rentBook(@RequestBody Rental rental) {
+    if (booksService.isBookAvailable(rental.getBookId())) {
         boolean result = rentalService.rentBook(rental);
         if (result) {
             return new ResponseEntity<>("Book rented successfully!", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Book is already rented!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Failed to rent book!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    } else {
+        return new ResponseEntity<>("Book is not available for rent!", HttpStatus.BAD_REQUEST);
     }
+}
+
 
     @PutMapping("/return/{rentalId}")
 public ResponseEntity<String> returnBook(@PathVariable int rentalId, @RequestBody Map<String, String> requestBody) {

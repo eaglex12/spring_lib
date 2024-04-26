@@ -1,6 +1,9 @@
+
 package com.javatpoint.service;
 
+import com.javatpoint.model.Books;
 import com.javatpoint.model.Rental;
+import com.javatpoint.repository.BooksRepository;
 import com.javatpoint.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,9 @@ public class RentalService {
 
     @Autowired
     private RentalRepository rentalRepository;
+
+    @Autowired
+    private BooksService booksService;
 
     public List<Rental> getAllRentals() {
         List<Rental> rentals = new ArrayList<>();
@@ -41,6 +47,8 @@ public class RentalService {
     public boolean rentBook(Rental rental) {
         Optional<Rental> existingRental = rentalRepository.findByBookId(rental.getBookId());
         if (existingRental.isEmpty()) {
+            // Set book availability to "rented"
+            booksService.updateBookAvailability(rental.getBookId(), "rented");
             rentalRepository.save(rental);
             return true;
         }
@@ -52,12 +60,18 @@ public class RentalService {
         Optional<Rental> rentalOptional = rentalRepository.findById(rentalId);
         if (rentalOptional.isPresent()) {
             Rental rental = rentalOptional.get();
-            rental.setReturnDate(returnDate);  // Directly setting LocalDate
+            rental.setReturnDate(returnDate);
             rentalRepository.save(rental);
+            booksService.updateBookAvailability(rental.getBookId(), "available"); // Updating book availability
+            rentalRepository.deleteById(rentalId);
+
             return true;
         }
         return false;
     }
+   
+    
+   
     
     
 
