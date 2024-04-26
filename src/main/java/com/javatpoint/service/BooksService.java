@@ -55,16 +55,7 @@ public class BooksService {
     }
     
 
-    public boolean returnBook(int bookId) {
-        Optional<Rental> rental = rentalRepository.findByBookId(bookId);
-        if (rental.isPresent()) {
-            Rental rentalRecord = rental.get();
-            rentalRecord.setReturnDate(LocalDate.now());
-            rentalRepository.save(rentalRecord);
-            return true;
-        }
-        return false;
-    }
+ 
 
     public List<Rental> getOverdueRentals() {
         LocalDate currentDate = LocalDate.now();
