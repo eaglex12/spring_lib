@@ -20,6 +20,11 @@ This is a Spring Boot application that provides RESTful endpoints to manage a bo
     - When returning a book, marking it as available is also there
     - Implement a method to check for overdue rentals (rental periods exceeding a set time, e.g., 14 days) is also implemneted.
 
+
+## H2 Console Configuration
+
+For this application, I've configured the H2 in-memory database. You can access the H2 console to view and interact with the database.
+
 ## Technologies Used
 
 - Spring Boot
